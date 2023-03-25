@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 export const SignupPage = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
-  console.log(form);
-  const { email, password, username } = form;
+  const { email, password, name } = form;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,18 +20,18 @@ export const SignupPage = () => {
   };
 
   const handleSignup = async () => {
-    try {
-      const response = await axios.post("/api/signup", { username, email, password });
-      const data = response.data;
-      if (data.success) {
-        // 회원가입 성공 처리
+    await axios
+      .post("http://localhost:8000/api/users/signup", JSON.stringify(form), {
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+      .then((res) => {
         navigate("/login");
-      } else {
-        // 회원가입 실패 처리
-      }
-    } catch (error) {
-      // 에러 처리
-    }
+      })
+      .catch((error) => {
+        alert(error.response.data.error.message);
+      });
   };
 
   return (
@@ -43,7 +42,7 @@ export const SignupPage = () => {
       </div>
       <div className="row">
         <div>name</div>
-        <input type="text" name="username" value={username} onChange={onChange} />
+        <input type="text" name="name" value={name} onChange={onChange} />
       </div>
       <div className="row">
         <div>password</div>
