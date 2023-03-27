@@ -1,16 +1,23 @@
 import log from "../../../assets/log.png";
 import diamond from "../../../assets/diamond.png";
 import stone from "../../../assets/stone.png";
-import { useDispatch } from "react-redux";
-import { setMoney } from "../../../services/userItem";
+import { useSelector } from "react-redux";
+import { socket } from "../../../socket/socket";
+import { RootState } from "../../../store/store";
+
+const cards = [
+  { src: log, time: 1000, reward: 1 },
+  { src: diamond, time: 10000, reward: 2 },
+  { src: stone, time: 100000, reward: 3 },
+];
 
 export const TouchCards = () => {
-  const dispatch = useDispatch();
-  const cards = [
-    { src: log, time: 1000, reward: 1 },
-    { src: diamond, time: 10000, reward: 2 },
-    { src: stone, time: 100000, reward: 3 },
-  ];
+  const userItem = useSelector((state: RootState) => state.userItem);
+
+  const plusMoney = (money: number) => {
+    socket.emit("plusMoney", [userItem.id, money], (data: any) => {});
+  };
+
   return (
     <div className="touchCards">
       {cards.map((card, i) => {
@@ -20,7 +27,7 @@ export const TouchCards = () => {
             className="card"
             onClick={(e) => {
               e.preventDefault();
-              dispatch(setMoney(card.reward));
+              plusMoney(card.reward);
             }}
           >
             <img src={card.src} alt="cardimgae" />

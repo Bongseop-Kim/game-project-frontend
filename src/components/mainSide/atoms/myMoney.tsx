@@ -1,13 +1,16 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import moneyBagImg from "../../../assets/money-bag.png";
-import { RootState } from "../../../store/store";
+import { socket } from "../../../socket/socket";
 
 export const MyMoney = () => {
-  const userItem = useSelector((state: RootState) => state.userItem);
+  const [money, setMoney] = useState(0);
+  socket.on("current_user", (data: any) => {
+    setMoney(data.money);
+  });
   return (
     <div className="myMoney">
       <img src={moneyBagImg} alt="money-bag" />
-      <p>{`${userItem.money} $`}</p>
+      <p>{`${money} $`}</p>
     </div>
   );
 };
