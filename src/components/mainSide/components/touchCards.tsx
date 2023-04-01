@@ -15,7 +15,7 @@ export const TouchCards = () => {
   const userItem = useSelector((state: RootState) => state.userItem);
 
   const plusMoney = (money: number) => {
-    socket.emit("plusMoney", { id: userItem.id, money: money }, (data: any) => {});
+    socket.emit("plusMoney", { id: userItem.id, money: money });
   };
 
   return (

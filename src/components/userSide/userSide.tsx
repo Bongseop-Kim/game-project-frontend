@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { setEmail, setId, setMoney, setName } from "../../services/userItem";
+import { setEmail, setId, setMoney, setName, setStrong } from "../../services/userItem";
 import { socket } from "../../socket/socket";
 import { RootState } from "../../store/store";
 import ranking from "../../assets/ranking.png";
@@ -28,6 +28,7 @@ export const UserSide = () => {
           dispatch(setName(res.data.data.name));
           dispatch(setEmail(res.data.data.email));
           dispatch(setMoney(res.data.data.money));
+          dispatch(setStrong(res.data.data.strong));
         })
         .catch((error) => {
           alert(error.response.data.error.message);
@@ -53,15 +54,16 @@ export const UserSide = () => {
   return (
     <div className="userContent">
       <div className="idontkonwo">
-        <div>{`접속한 유저 이름 : ${userItem.name}`}</div>
+        <div>접속한 유저 이름 : {userItem.name}</div>
         <button onClick={logOut}>로그아웃</button>
+        <div>{userItem.strong}</div>
         <img className="ranking" src={ranking} alt="" />
         <div>
           {allUser.map((user: any) => {
             return (
               <div className="row" key={user.name}>
-                <div>{`이름 : ${user.name}　　　　`}</div>
-                <div>{`돈 : ${user.money}`}</div>
+                <div>{user.name} </div>
+                <div>돈 : ${user.money}</div>
               </div>
             );
           })}

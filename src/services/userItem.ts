@@ -21,10 +21,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setMoney: (state, action) => {
-      state.money += action.payload;
+      state.money = action.payload;
     },
     setStrong: (state, action) => {
-      state.strong += action.payload;
+      state.strong = action.payload;
     },
     setId: (state, action) => {
       state.id = action.payload;
