@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { setEmail, setId, setName } from "../../services/userItem";
+import { setEmail, setId, setMoney, setName } from "../../services/userItem";
 import { socket } from "../../socket/socket";
 import { RootState } from "../../store/store";
 import ranking from "../../assets/ranking.png";
@@ -13,6 +13,7 @@ export const UserSide = () => {
   const dispatch = useDispatch();
   const userItem = useSelector((state: RootState) => state.userItem);
   const [allUser, setAllUser] = useState([]);
+
   useEffect(() => {
     const fetchUser = async (token: any) => {
       await axios
@@ -26,6 +27,7 @@ export const UserSide = () => {
           dispatch(setId(res.data.data.id));
           dispatch(setName(res.data.data.name));
           dispatch(setEmail(res.data.data.email));
+          dispatch(setMoney(res.data.data.money));
         })
         .catch((error) => {
           alert(error.response.data.error.message);
@@ -37,7 +39,7 @@ export const UserSide = () => {
     } else {
       navigate("/login");
     }
-  }, [navigate, dispatch]);
+  }, []);
 
   const logOut = () => {
     Cookies.remove("token");
@@ -53,12 +55,11 @@ export const UserSide = () => {
       <div className="idontkonwo">
         <div>{`접속한 유저 이름 : ${userItem.name}`}</div>
         <button onClick={logOut}>로그아웃</button>
-        <div>ranking</div>
         <img className="ranking" src={ranking} alt="" />
         <div>
           {allUser.map((user: any) => {
             return (
-              <div className="row">
+              <div className="row" key={user.name}>
                 <div>{`이름 : ${user.name}　　　　`}</div>
                 <div>{`돈 : ${user.money}`}</div>
               </div>

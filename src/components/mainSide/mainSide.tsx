@@ -1,5 +1,5 @@
-import { MyMoney } from "./atoms/myMoney";
-import { TouchCards } from "./atoms/touchCards";
+import { MyMoney } from "./components/myMoney";
+import { TouchCards } from "./components/touchCards";
 
 export const MainSide = () => {
   return (
